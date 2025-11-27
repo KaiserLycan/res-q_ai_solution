@@ -20,8 +20,3 @@ document.querySelector('#app').innerHTML = `
     </p>
   </div>
 `
-
-// This function is not defined in the provided code, which will cause a ReferenceError.
-// If you have a setupCounter function somewhere, make sure it's imported or defined.
-// For now, I will comment it out to prevent errors.
-// setupCounter(document.querySelector('#counter'))

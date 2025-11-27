@@ -7,9 +7,6 @@
 import AgoraRTC from "agora-rtc-sdk-ng"
 import {AgoraCredentials} from "../constants/index.js";
 
-const appID = AgoraCredentials.AGORA_APP_ID;
-const token = AgoraCredentials.AGORA_TOKEN;
-
 /**
  * @class AgoraCallService
  * @description A service class to manage Agora RTC audio calls.
@@ -19,11 +16,10 @@ class AgoraCallService{
         this.client = null;
         this.localAudioTrack = null;
         this.onConnectioStatChange = null;
-        this.userID = null;
     }
 
     _initializeClient() {
-        if(!appID || !token) {
+        if(!AgoraCredentials.AGORA_APP_ID) {
             console.error("Missing credentials");
             return;
         }
@@ -34,24 +30,28 @@ class AgoraCallService{
 
     /**
      * Joins an Agora channel with the provided credentials.
+     * @param {string} appId - The Agora App ID.
      * @param {string} channel - The channel name to join.
-     * @param {number | null} uid - The user ID.
+     * @param {string} token - The Agora token for authentication.
+     * @param {number | string} uid - The user ID.
      * @returns {Promise<void>}
      */
-    async joinChannel(channel, uid = null)
+    async joinChannel(appId, channel, token, uid = null)
     {
         if(!this.client) {
             this._initializeClient();
         }
 
         try {
-            const joinedUID = await this.client.join(appID, channel, token, Number(uid));
+            // The UID is stored on the client object after joining.
+            const joinedUID = await this.client.join(appId, channel, token, Number(uid));
             console.log(`User ${joinedUID} has joined the channel ${channel}`);
+            
             this.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({
                 encoderConfig: "speech_low_quality", //Optimize voice
             });
             await this.client.publish(this.localAudioTrack);
-            console.log(`Publish success! user ${uid} has successfully joined ${channel} channel.`);
+            console.log(`Publish success! User ${uid} has successfully joined ${channel} channel.`);
         }
         catch (error) {
             if(this.localAudioTrack) {
@@ -64,7 +64,8 @@ class AgoraCallService{
                 this.client = null;
             }
 
-            console.error(error + "Failed to join the channel");
+            // Re-throw the error to be caught by the caller
+            throw new Error("Failed to join the channel: " + error.message);
         }
     }
 
@@ -98,13 +99,18 @@ class AgoraCallService{
 
     /**
      * Sets up listeners for Agora client events.
-     * Note: This function has a `this` context issue. It should be a method of the class
-     * or have the client passed to it.
      */
     setupEnvironmentListeners() {
         // Event handler for when a remote user publishes a track.
         this.client.on("user-published", async (user, mediaType) => {
+            // --- FIX: Do not subscribe to the local user's own stream ---
+            if (user.uid === this.client.uid) {
+                console.log("Skipping subscription to self.");
+                return;
+            }
+
             await this.client.subscribe(user, mediaType);
+            console.log(`Subscribed to remote user: ${user.uid}`);
 
             if(mediaType === "audio") {
                 const remoteAudioTrack = user.audioTrack;
@@ -114,7 +120,7 @@ class AgoraCallService{
 
         // Event handler for when a remote user unpublishes a track.
         this.client.on("user-unpublished", async (user, mediaType) => {
-            // Logic for when a remote user unpublishes can be added here.
+            console.log(`User ${user.uid} unpublished their ${mediaType} track.`);
         });
 
 
@@ -131,9 +137,4 @@ class AgoraCallService{
 
 }
 
-
 export default AgoraCallService;
-
-
-///For future Implementations
-//- initialize the client onload

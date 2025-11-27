@@ -1,8 +1,10 @@
 export const AgoraCredentials = {
-    AGORA_APP_ID : "2726042dfd394728824bad06e1257607",
-    AGORA_APP_CERT : "5c167f9c2d0f4b76bca1f55c880d8dbc",
-    AGORA_API_KEY : "06c29c29024c40eba14dc1ad301a2016",
-    AGORA_API_SECRET : "8554bd71bb1942a588779d3ddd1ab183",
-    AGORA_TOKEN: "007eJxTYAifGZc97dpt8+WLb3QrpVQLFhfPbCn03KBwps5oeV4BW5sCg5G5kZmBiVFKWoqxpYm5kYWFkUlSYoqBWaqhkam5mYF5npVGZkMgI8Or00oMjFAI4rMwlKQWlzAwAADyXB2f"
+    AGORA_APP_ID : "2726042dfd394728824bad06e1257607", // This is generally safe to be public
+    // IMPORTANT: Replace this with your actual App Certificate from the Agora Console
+    AGORA_APP_CERT: "YOUR_AGORA_APP_CERTIFICATE" 
 }
 
+export const URLs = {
+    // Assuming your backend server is running on port 3001 to avoid conflict with Vite's port 3000
+    backendURL : "http://localhost:3001"
+}
