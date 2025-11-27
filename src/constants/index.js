@@ -1,0 +1,7 @@
+export const AgoraCredentials = {
+    AGORA_APP_ID : "2726042dfd394728824bad06e1257607",
+    AGORA_APP_CERT : "5c167f9c2d0f4b76bca1f55c880d8dbc",
+    AGORA_API_KEY : "06c29c29024c40eba14dc1ad301a2016",
+    AGORA_API_SECRET : "8554bd71bb1942a588779d3ddd1ab183"
+}
+
