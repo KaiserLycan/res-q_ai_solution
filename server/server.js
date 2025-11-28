@@ -72,7 +72,7 @@ app.post('/api/agora/convo-ai/start-agent', async (req, res) => {
             channel: channel_name,
             token: token,
             agent_rtc_uid: "999",
-            remote_rtc_uids: [remote_uid],
+            remote_rtc_uids: [String(remote_uid)], // Convert remote_uid to string here
             enable_string_uid: false,
             idle_timeout: 120,
             llm: {

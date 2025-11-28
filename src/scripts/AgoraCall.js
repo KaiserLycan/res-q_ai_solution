@@ -34,9 +34,10 @@ class AgoraCallService{
      * @param {string} channel - The channel name to join.
      * @param {string} token - The Agora token for authentication.
      * @param {number | string} uid - The user ID.
+     * @param {boolean} publishAudio - Whether to publish the local audio track. Defaults to true.
      * @returns {Promise<void>}
      */
-    async joinChannel(appId, channel, token, uid = null)
+    async joinChannel(appId, channel, token, uid = null, publishAudio = true)
     {
         if(!this.client) {
             this._initializeClient();
@@ -47,11 +48,15 @@ class AgoraCallService{
             const joinedUID = await this.client.join(appId, channel, token, Number(uid));
             console.log(`User ${joinedUID} has joined the channel ${channel}`);
             
-            this.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({
-                encoderConfig: "speech_low_quality", //Optimize voice
-            });
-            await this.client.publish(this.localAudioTrack);
-            console.log(`Publish success! User ${uid} has successfully joined ${channel} channel.`);
+            if (publishAudio) {
+                this.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+                    encoderConfig: "speech_low_quality", //Optimize voice
+                });
+                await this.client.publish(this.localAudioTrack);
+                console.log(`Publish success! User ${uid} has successfully joined ${channel} channel.`);
+            } else {
+                console.log(`Joined channel ${channel} as passive listener.`);
+            }
         }
         catch (error) {
             if(this.localAudioTrack) {

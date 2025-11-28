@@ -27,6 +27,18 @@ export class ConversationalAIService {
 
         // Bind methods to ensure 'this' context is correct
         this._handleUserPublished = this._handleUserPublished.bind(this);
+        
+        // Set up listener for remote users immediately after client creation
+        this.client.on("user-published", this._handleUserPublished);
+        this.client.on("user-unpublished", (user, mediaType) => {
+            console.log(`User ${user.uid} unpublished their ${mediaType} track.`);
+        });
+        this.client.on("user-left", (user) => {
+            console.log(`User ${user.uid} left the channel.`);
+        });
+        this.client.on("connection-state-change", (curState, prevState, reason) => {
+            console.log(`Connection state changed from ${prevState} to ${curState}. Reason: ${reason}`);
+        });
     }
 
     /**
@@ -51,9 +63,6 @@ export class ConversationalAIService {
             this.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
             await this.client.publish(this.localAudioTrack);
             console.log("Successfully published local audio track.");
-
-            // Set up listener for remote users
-            this.client.on("user-published", this._handleUserPublished);
 
             // Make API call to backend to start the conversational AI agent
             console.log("Requesting backend to start AI agent...");
@@ -99,11 +108,17 @@ export class ConversationalAIService {
      * @param {"audio" | "video"} mediaType - The type of media published.
      */
     async _handleUserPublished(user, mediaType) {
+        console.log(`User ${user.uid} published ${mediaType} track.`);
         await this.client.subscribe(user, mediaType);
         console.log(`Subscribed to user ${user.uid} (${mediaType})`);
         if (mediaType === "audio") {
-            user.audioTrack.play();
-            console.log(`Playing audio from user ${user.uid}`);
+            const remoteAudioTrack = user.audioTrack;
+            if (remoteAudioTrack) {
+                remoteAudioTrack.play();
+                console.log(`Playing audio from user ${user.uid}`);
+            } else {
+                console.warn(`Audio track not found for user ${user.uid} despite mediaType being audio.`);
+            }
         }
     }
 
@@ -121,6 +136,10 @@ export class ConversationalAIService {
 
             // Remove event listeners
             this.client.off("user-published", this._handleUserPublished);
+            this.client.off("user-unpublished");
+            this.client.off("user-left");
+            this.client.off("connection-state-change");
+
 
             if (this.client.connectionState === 'CONNECTED') {
                 await this.client.leave();
