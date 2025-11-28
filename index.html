@@ -1,16 +1,155 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>res-q_ai_solution</title>
-  </head>
-  <body>
-    <div id="app">
-      <h1>Main Page</h1>
-      <a href="./src/pages/testcall.html">Go to Test Call Page</a>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResQ-AI</title>
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="stylesheet" href="src/stylesheets/style.css">
+  <!-- (Previously used Leaflet—replaced with Google Maps Embed iframe) -->
+</head>
+<body>
+<div class="watch-commander-container">
+  <!-- HEADER -->
+  <header class="wc-header">
+    <div class="wc-header-left">
+      <h1 class="wc-title">🚨 ResQ-AI</h1>
+      <span class="wc-subtitle">AI Triage System - Real-time Monitoring</span>
     </div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+    <div class="wc-header-right" style="display:flex;align-items:center;gap:12px;">
+      <a href="./src/pages/testcall.html" style="text-decoration:none;padding:8px 12px;background:#1976d2;color:#fff;border-radius:6px;font-weight:600;">Audio Test</a>
+      <a href="./caller.html" style="text-decoration:none;padding:8px 12px;background:#1976d2;color:#fff;border-radius:6px;font-weight:600;">Caller Page</a>
+      <span class="wc-time">Live Feed • <span id="current-time"></span></span>
+    </div>
+  </header>
+
+  <!-- MAIN GRID -->
+  <div class="wc-grid">
+    <!-- LEFT PANEL: ACTIVE AI NEGOTIATIONS -->
+    <section class="wc-panel wc-left-panel">
+      <div class="wc-panel-header">
+        <h2>📡 Active AI Negotiations</h2>
+        <span class="wc-call-count" id="call-count">4 calls</span>
+      </div>
+      <div class="wc-call-list" id="call-list">
+        <!-- Dynamically populated -->
+      </div>
+    </section>
+
+    <!-- MIDDLE PANEL: LIVE INTERACTION FEED -->
+    <section class="wc-panel wc-middle-panel">
+      <!-- Chat Transcript Section -->
+      <div class="wc-chat-section">
+        <div class="wc-chat-header">
+          <span class="wc-chat-id" id="transcript-call-id">STREAM-0001</span>
+        </div>
+
+        <!-- Tactical Audio Visualizer -->
+        <div class="visualizer-wrapper">
+          <div class="tactical-visualizer" aria-live="polite" aria-label="Tactical audio visualizer">
+            <div class="viz-title">🔊 Tactical Audio Visualizer</div>
+          <div class="visualizer-bars" id="visualizerBars">
+            <!-- 20 bars with slightly randomized animation delays/durations for organic motion -->
+            <div class="bar" style="animation-delay:-0.12s; animation-duration:1.46s"></div>
+            <div class="bar" style="animation-delay:-0.44s; animation-duration:1.34s"></div>
+            <div class="bar" style="animation-delay:-0.06s; animation-duration:1.68s"></div>
+            <div class="bar" style="animation-delay:-0.30s; animation-duration:1.52s"></div>
+            <div class="bar" style="animation-delay:-0.82s; animation-duration:1.28s"></div>
+            <div class="bar" style="animation-delay:-0.18s; animation-duration:1.60s"></div>
+            <div class="bar" style="animation-delay:-0.66s; animation-duration:1.40s"></div>
+            <div class="bar" style="animation-delay:-0.22s; animation-duration:1.58s"></div>
+            <div class="bar" style="animation-delay:-0.48s; animation-duration:1.36s"></div>
+            <div class="bar" style="animation-delay:-0.04s; animation-duration:1.72s"></div>
+            <div class="bar" style="animation-delay:-0.56s; animation-duration:1.30s"></div>
+            <div class="bar" style="animation-delay:-0.14s; animation-duration:1.50s"></div>
+            <div class="bar" style="animation-delay:-0.74s; animation-duration:1.22s"></div>
+            <div class="bar" style="animation-delay:-0.28s; animation-duration:1.54s"></div>
+            <div class="bar" style="animation-delay:-0.34s; animation-duration:1.48s"></div>
+            <div class="bar" style="animation-delay:-0.92s; animation-duration:1.20s"></div>
+            <div class="bar" style="animation-delay:-0.08s; animation-duration:1.66s"></div>
+            <div class="bar" style="animation-delay:-0.38s; animation-duration:1.44s"></div>
+            <div class="bar" style="animation-delay:-0.60s; animation-duration:1.32s"></div>
+            <div class="bar" style="animation-delay:-0.02s; animation-duration:1.70s"></div>
+          </div>
+
+          <div class="visualizer-meta">🔴 <span>RECEIVING ENCRYPTED AUDIO STREAM...</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary & Conclusion Section -->
+        <div class="wc-summary-section">
+        <div class="wc-live-summary">
+          <h3>📋 Live Summary</h3>
+          <ul class="wc-summary-list" id="summary-list">
+            <li>Caller reporting smoke and possible injury at location</li>
+            <li>Audio feed indicates elevated respiratory distress</li>
+            <li>AI prioritized medical assistance (Priority: HIGH)</li>
+          </ul>
+        </div>
+
+        <div class="wc-conclusion">
+          <h3>✅ AI Conclusion/Next Step</h3>
+          <p class="wc-conclusion-text" id="conclusion-text">
+            - Dispatch ALS team
+            <br>- Initiate live audio monitoring and record stream
+            <br>- Notify nearest available operator for takeover
+          </p>
+        </div>
+      </div>
+
+      <!-- FULL TAKEOVER BUTTON -->
+      <div class="bargein-wrap">
+        <button id="bargein-full-btn" class="wc-bargein-btn">🚨 FULL TAKEOVER</button>
+      </div>
+    </section>
+
+    <!-- RIGHT PANEL: STATS -->
+    <section class="wc-panel wc-right-panel">
+      <div class="wc-panel-header">
+        <h2>📊 System Stats</h2>
+      </div>
+
+      <div class="wc-stats-container">
+        <div class="wc-stat-box">
+          <div class="wc-stat-label">Operators Available</div>
+          <div class="wc-stat-value">2</div>
+          <div class="wc-operator-list">
+            <div class="wc-operator-item">
+              <span class="wc-operator-status online">●</span>
+              <span>Sarah Chen</span>
+            </div>
+            <div class="wc-operator-item">
+              <span class="wc-operator-status online">●</span>
+              <span>James Rodriguez</span>
+            </div>
+            <div class="wc-operator-item">
+              <span class="wc-operator-status busy">●</span>
+              <span>Maria Lopez</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="wc-stat-box highlight">
+          <div class="wc-stat-label">🚨 Code Duress Detected</div>
+          <div class="wc-stat-value-alert" id="duress-count">1</div>
+          <div class="wc-stat-context">MASKED INTENT Active</div>
+        </div>
+
+        <!-- Live Tactical Map: Google Maps Embed (replace API_KEY) -->
+        <div id="mini-map" aria-label="Live tactical map">
+          <iframe id="mini-map-frame"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d61781.872610565595!2d121.03972608645287!3d14.578149461688037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c7dc88f7b24f%3A0x4a592b2b4b34fd89!2sPasig%2C%20Metro%20Manila!5e0!3m2!1sen!2sph!4v1764250713056!5m2!1sen!2sph"></iframe>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script type="module" src="src/main.js"></script>
+<!-- Google Maps Embed iframe is used for the mini-map. Replace API_KEY in the iframe src with your Maps Embed API key. -->
+</body>
 </html>

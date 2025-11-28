@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Caller — Biometric Radar</title>
+  <link rel="stylesheet" href="caller.css">
+</head>
+<body class="idle">
+  <div class="app">
+    <header class="glass-pill">
+      <div class="status">
+        <span class="dot" id="statusDot" aria-hidden="true"></span>
+        <div class="status-text" id="statusText">
+          <div class="primary">SYSTEM ARMED</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Compact top-right glass menu -->
+    <div class="menu-wrap" aria-hidden="false">
+      <button id="menuToggle" class="menu-toggle" aria-expanded="false" aria-label="Open menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="5" cy="12" r="1.6" fill="white" opacity="0.95"/>
+          <circle cx="12" cy="12" r="1.6" fill="white" opacity="0.95"/>
+          <circle cx="19" cy="12" r="1.6" fill="white" opacity="0.95"/>
+        </svg>
+      </button>
+
+      <div id="menuDropdown" class="menu-dropdown" role="menu" aria-hidden="true">
+        <!-- Page tabs / quick links -->
+        <a class="menu-item page-link" href="index.html" role="menuitem">
+          <span class="label">Home</span>
+        </a>
+        <a class="menu-item page-link" href="caller.html" role="menuitem">
+          <span class="label">Caller</span>
+        </a>
+        <a class="menu-item page-link" href="pages/testcall.html" role="menuitem">
+          <span class="label">Test Call</span>
+        </a>
+
+        <div style="height:8px"></div>
+
+        <button class="menu-item" id="muteToggle" role="menuitem" aria-pressed="false">
+          <span class="label">Mute Audio</span>
+        </button>
+        <button class="menu-item" id="shareLoc" role="menuitem">
+          <span class="label">Share Location</span>
+        </button>
+        <button class="menu-item" id="settingsBtn" role="menuitem">
+          <span class="label">Settings</span>
+        </button>
+        <button class="menu-item" id="helpBtn" role="menuitem">
+          <span class="label">Help</span>
+        </button>
+      </div>
+    </div>
+
+    <main class="core">
+      <div class="radar">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+
+        <button id="sosBtn" class="sos" aria-pressed="false">
+          <div class="btn-label">
+            <span class="main" id="btnMain">SOS</span>
+            <span class="sub" id="btnSub">TAP TO BROADCAST</span>
+          </div>
+        </button>
+      </div>
+    </main>
+
+    <footer class="footer-glass">
+      <div class="location">
+        <svg class="loc-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M12 21s-7-4.5-7-10a7 7 0 0114 0c0 5.5-7 10-7 10z" />
+          <circle cx="12" cy="11" r="2.4" fill="currentColor" />
+        </svg>
+        <input id="locationInput" type="text" placeholder="Enter location or use GPS" aria-label="Location" />
+      </div>
+    </footer>
+  </div>
+
+  <script src="caller.js"></script>
+</body>
+</html>

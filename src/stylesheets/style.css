@@ -1,96 +1,721 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+/* ╔════════════════════════════════════════════════════════════════════════════════╗
+   ║                  NEXT-GEN 911 COMMAND CENTER - TACTICAL UI                     ║
+   ║                     Cyberpunk/Glassmorphism Design System                      ║
+   ║                                                                                 ║
+   ║  High Urgency • Low Cognitive Load • Futuristic Polish                         ║
+   ╚════════════════════════════════════════════════════════════════════════════════╝ */
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+    /* ─── PRIMARY COLORS ─── */
+    --bg-deep: #0B1120;
+    --bg-1: rgba(11, 17, 32, 0.8);
+    --panel-bg: rgba(30, 41, 59, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    /* ─── ACCENT COLORS (Neon) ─── */
+    --accent-blue: #39a0ff;
+    --accent-cyan: #00f0ff;
+    --accent-green: #2aff9e;
+    --accent-red: #ff3b3b;
+    --accent-red-dark: #c62828;
+    --accent-purple: #9c27b0;
+    --muted: #9fb5c9;
+    --text-bright: #e6f5ff;
+    --text-normal: #dbeafc;
+    
+    /* ─── DURESS & ALERT ─── */
+    --duress-glow: rgba(255, 59, 59, 0.4);
+    --duress-shadow: 0 0 30px rgba(255, 59, 59, 0.6);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
+/* ╔════════════════════════════════════════════════════════════════════════════════╗
+   ║                           RESET & BASE STYLES                                  ║
+   ╚════════════════════════════════════════════════════════════════════════════════╝ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; width: 100%; }
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, var(--bg-deep) 0%, #0f1a2e 50%, #0d1620 100%);
+    color: var(--text-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.watch-commander-container { display: flex; flex-direction: column; height: 100vh; }
+
+/* ╔════════════════════════════════════════════════════════════════════════════════╗
+   ║                              HEADER STYLES                                     ║
+   ╚════════════════════════════════════════════════════════════════════════════════╝ */
+.wc-header{
+    padding: 18px 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, rgba(11, 17, 32, 0.75), rgba(18, 22, 30, 0.5));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.wc-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-bright);
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+}
+.wc-subtitle { font-size: 12px; color: var(--muted); }
+.wc-time {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-cyan);
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* ╔════════════════════════════════════════════════════════════════════════════════╗
+   ║                          MAIN GRID LAYOUT                                      ║
+   ╚════════════════════════════════════════════════════════════════════════════════╝ */
+.wc-grid{display:grid;grid-template-columns:300px 1fr 300px;gap:18px;padding:18px;flex:1;align-items:stretch}
+
+/* ╔════════════════════════════════════════════════════════════════════════════════╗
+   ║                    GLASSMORPHISM PANELS (Core Effect)                          ║
+   ║  Background: rgba(30, 41, 59, 0.6)                                            ║
+   ║  Blur: 12px • Border: 1px solid rgba(255, 255, 255, 0.1)                      ║
+   ╚════════════════════════════════════════════════════════════════════════════════╝ */
+.wc-panel {
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 16px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        inset -1px -1px 0 rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+.wc-panel-header{padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+.wc-panel-header h2 { font-size: 14px; color: var(--text-bright); font-weight: 700; }
+.wc-call-count{background:linear-gradient(90deg, rgba(57,160,255,0.12), rgba(0,240,255,0.06));padding:6px 10px;border-radius:999px;color:var(--accent-cyan);font-weight:700;font-size:12px}
+
+/* ╔════════════════════════════════════════════════════════════════════════════════╗
+   ║                   LEFT PANEL: CALL LIST & STATUS                               ║
+   ║  Features: Active state highlight, DURESS pulsing glow animation               ║
+   ╚════════════════════════════════════════════════════════════════════════════════╝ */
+.wc-call-list {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: auto;
+}
+.wc-call-card {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    border-radius: 12px;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    border-left: 3px solid transparent;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    position: relative;
+}
+.wc-call-card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(2,6,22,0.6)}
+.wc-call-card.active {
+    background: linear-gradient(90deg, rgba(57, 160, 255, 0.18), rgba(30, 60, 120, 0.2));
+    box-shadow: 0 18px 40px rgba(10, 120, 220, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(57, 160, 255, 0.22);
+    border-left-color: var(--accent-blue);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #f7df1eaa);
+/* Priority call styling for masked intent / duress */
+.wc-call-card.priority {
+    border-left-color: var(--accent-red);
+    box-shadow: 0 14px 36px rgba(255, 75, 75, 0.12);
 }
 
-.card {
-  padding: 2em;
+/* ─── DURESS PULSING GLOW (HIGH URGENCY) ─── */
+.wc-call-card[data-duress="true"] {
+    animation: duressGlow 1.2s ease-in-out infinite;
+    box-shadow: 0 0 20px rgba(255, 59, 59, 0.5);
+    border-left-color: var(--accent-red);
+}
+@keyframes duressGlow {
+    0%, 100% { 
+        box-shadow: 0 0 15px rgba(255, 59, 59, 0.4), 0 0 30px rgba(255, 59, 59, 0.1); 
+        border-left-color: var(--accent-red);
+    }
+    50% { 
+        box-shadow: 0 0 30px rgba(255, 59, 59, 0.8), 0 0 60px rgba(255, 59, 59, 0.3);
+        border-left-color: #ff6b6b;
+    }
 }
 
-.read-the-docs {
-  color: #888;
+.wc-call-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.wc-call-id { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--text-bright); letter-spacing: 1px; }
+.wc-call-duration{font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:12px}
+.wc-call-info{color:#9fb5c9;font-size:12px;margin-top:6px}
+
+/* ─── STATUS BADGES (NEON EFFECT) ─── */
+.wc-call-status{display:flex;align-items:center;gap:8px}
+.wc-status-icon{font-size:16px}
+.wc-status-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.status-ai-handling {
+    background: linear-gradient(90deg, rgba(0, 240, 255, 0.25), rgba(57, 160, 255, 0.25));
+    color: var(--accent-cyan);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+}
+.status-human-monitoring {
+    background: linear-gradient(90deg, rgba(42, 255, 158, 0.2), rgba(42, 255, 158, 0.15));
+    color: var(--accent-green);
+    box-shadow: 0 0 12px rgba(42, 255, 158, 0.2);
+    border: 1px solid rgba(42, 255, 158, 0.2);
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+/* ╔════════════════════════════════════════════════════════════════════════════════╗
+   ║                  CENTER: LIVE TRANSCRIPT & CHAT                                ║
+   ║  Features: Distinct bubble styling, soundwave animation, proper hierarchy      ║
+   ╚════════════════════════════════════════════════════════════════════════════════╝ */
+
+/* ─── MIDDLE PANEL: Flex Container with Vertical Stacking ─── */
+.wc-middle-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* ─── CHAT SECTION: Takes up available space, scrolls when needed ─── */
+.wc-chat-section {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Ensure header stays at top and visualizer centers in available space */
+.visualizer-wrapper{flex:1;display:flex;align-items:center;justify-content:center;padding:8px 14px}
+
+.wc-chat-header {
+    padding: 12px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* ─── SOUNDWAVE ANIMATION (listening indicator) ─── */
+.wc-chat-header::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 16px;
+    background: 
+        linear-gradient(90deg, 
+            transparent 0%, 
+            var(--accent-cyan) 20%, 
+            transparent 40%);
+    margin-right: 10px;
+    animation: soundwave 0.8s ease-in-out infinite;
+}
+
+@keyframes soundwave {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.4); }
+    50% { opacity: 1; transform: scaleY(1); }
+}
+
+.wc-chat-id{font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:8px;color:var(--muted)}
+
+/* ─── TRANSCRIPT: Scrollable content area ─── */
+.wc-transcript{
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    overflow:auto;
+    flex: 1;
+}
+
+/* ╔════════════════════════════════════════════════════════════════════════════╗
+     ║                         TACTICAL AUDIO VISUALIZER                            ║
+     ╚════════════════════════════════════════════════════════════════════════════╝ */
+.tactical-visualizer{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 8px;gap:10px;width:100%;border:1px solid rgba(255,255,255,0.06);background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.006));}
+
+/* small top-left title inside the visualizer */
+.tactical-visualizer .viz-title{position:absolute;top:10px;left:12px;font-size:10px;opacity:0.75;font-weight:700;color:var(--text-normal);pointer-events:none}
+
+/* Grid background subtle */
+.tactical-visualizer{background-image:linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);background-size:20px 20px,20px 20px}
+
+.visualizer-bars{display:flex;align-items:center;justify-content:center;gap:4px;width:100%;max-width:920px;height:360px;padding:18px 10px}
+
+/* Bars are thin and grow from center (scaleY from center) */
+.bar{width:4px;height:60%;background:linear-gradient(180deg,var(--accent-cyan),var(--accent-blue));border-radius:999px;transform-origin:center center;transform:scaleY(0.22);box-shadow:0 8px 18px rgba(0,146,255,0.12), inset 0 0 10px rgba(0,229,255,0.06);animation:barWave 1.6s infinite ease-in-out;}
+.bar:nth-child(odd){background:linear-gradient(180deg,#00f0ff,#2bb0ff)}
+.bar:nth-child(even){background:linear-gradient(180deg,#19d1ff,#0077ff)}
+
+@keyframes barWave{
+    0%{transform:scaleY(0.18);filter:brightness(0.9)}
+    30%{transform:scaleY(0.68);filter:brightness(1.03)}
+    50%{transform:scaleY(1.0);filter:brightness(1.15)}
+    70%{transform:scaleY(0.56);filter:brightness(1.02)}
+    100%{transform:scaleY(0.18);filter:brightness(0.9)}
+}
+
+.visualizer-meta{font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-weight:700;color:var(--text-bright);font-size:13px;letter-spacing:0.6px;display:flex;align-items:center;gap:8px}
+.visualizer-meta span{opacity:0.95}
+.visualizer-meta{animation:metaPulse 1.8s infinite}
+@keyframes metaPulse{0%{opacity:0.85;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}100%{opacity:0.85;transform:translateY(0)}}
+
+/* Responsive tweaks */
+@media (max-width:900px){
+    .visualizer-bars{height:220px;gap:8px}
+    .bar{width:12px}
+}
+@media (max-width:520px){
+    .visualizer-bars{height:160px;max-width:320px}
+    .bar{width:8px}
+    .visualizer-meta{font-size:12px}
+}
+
+/* Barge-in button wrapper and sizing when break-in input removed */
+.bargein-wrap{display:flex;justify-content:center;padding:14px}
+.bargein-wrap .wc-bargein-btn{width:60%;max-width:520px}
+
+.wc-message{display:flex}
+.wc-message-caller{justify-content:flex-start}
+.wc-message-ai{justify-content:flex-end}
+
+/* ─── CHAT BUBBLES (Distinct styling) ─── */
+.wc-message-bubble{max-width:72%;padding:16px 20px;border-radius:14px;line-height:1.45;font-size:14px;display:flex;align-items:flex-start;gap:10px}
+
+/* Caller (Victim) - Dark Gray/Charcoal, align right */
+.wc-bubble-caller {
+    background: linear-gradient(180deg, rgba(38, 41, 47, 0.9), rgba(28, 32, 38, 0.95));
+    color: var(--text-normal);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    align-self: flex-start;
+}
+
+/* AI (Agent) - Deep blue/cyan gradient, align left */
+.wc-bubble-ai {
+    background: linear-gradient(135deg, rgba(4, 43, 107, 0.95), rgba(11, 78, 161, 1));
+    color: #ffffff;
+    box-shadow: 0 12px 40px rgba(0, 150, 255, 0.3);
+    border: 1px solid rgba(57, 160, 255, 0.2);
+    align-self: flex-end;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+.wc-bubble-ai .wc-bubble-icon{filter:drop-shadow(0 2px 6px rgba(9,40,90,0.6))}
+.wc-bubble-caller .wc-message-text{color:#cbd8e6}
+
+/* ─── SUPERVISOR BREAK-IN MESSAGES ─── */
+.wc-bubble-supervisor {
+    background: linear-gradient(135deg, rgba(94, 53, 177, 0.95), rgba(126, 87, 194, 1));
+    color: #ffffff;
+    box-shadow: 0 12px 40px rgba(156, 39, 176, 0.3);
+    border: 1px solid rgba(156, 39, 176, 0.3);
+}
+
+/* ─── CODE DURESS HIGHLIGHT (High-visibility glow) ─── */
+.wc-message-bubble.duress {
+    outline: 2px solid rgba(255, 59, 59, 0.9);
+    box-shadow: 0 0 30px rgba(255, 59, 59, 0.4), 0 12px 40px rgba(0, 0, 0, 0.8) !important;
+    animation: duressFlash 0.6s ease-in-out infinite;
+}
+
+@keyframes duressFlash {
+    0%, 100% { outline-color: rgba(255, 59, 59, 0.6); }
+    50% { outline-color: rgba(255, 107, 107, 1); }
+}
+
+/* ─── BREAK-IN INPUT SECTION: Fixed at bottom, no overlap ─── */
+.wc-breakin-input-section{
+    display:flex;
+    gap:10px;
+    padding:12px;
+    border-top:1px solid rgba(255,255,255,0.02);
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+    flex-shrink: 0;
+}
+.wc-breakin-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 14px;
+    color: var(--text-normal);
+    font-family: 'Inter', system-ui;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+.wc-breakin-input:focus{background:rgba(255,255,255,0.06);border-color:rgba(57,160,255,0.3);box-shadow:0 0 20px rgba(57,160,255,0.1)}
+.wc-breakin-send-btn {
+    background: linear-gradient(135deg, #39a0ff, #1e88e5);
+    border: 0;
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 6px 20px rgba(57, 160, 255, 0.15);
+}
+.wc-breakin-send-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(57,160,255,0.25)}
+.wc-breakin-send-btn:active{transform:translateY(0)}
+
+/* ╔════════════════════════════════════════════════════════════════════════════════╗
+   ║              SUMMARY & CONCLUSION BOXES                                         ║
+   ╚════════════════════════════════════════════════════════════════════════════════╝ */
+
+/* ─── SUMMARY SECTION: Fixed at bottom, stacked with Summary & Conclusion side-by-side ─── */
+.wc-summary-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 14px;
+    flex-shrink: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    max-height: 200px;
+}
+.wc-live-summary,.wc-conclusion{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px;overflow:auto;border:1px solid rgba(255,255,255,0.03)}
+.wc-live-summary h3,.wc-conclusion h3{color:var(--accent-cyan);font-size:12px}
+.wc-summary-list li {
+    padding: 6px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.02);
+    font-family: 'JetBrains Mono', monospace;
+    color: #cfe8ff;
+    font-size: 12px;
+}
+.wc-conclusion-text { color: var(--accent-green); font-weight: 700; }
+
+/* ╔════════════════════════════════════════════════════════════════════════════════╗
+   ║           ⚠️  FULL-WIDTH INTERVENE / TAKEOVER BUTTON  ⚠️                       ║
+   ║              Deep Red • Pulsing Animation • High Urgency                        ║
+   ╚════════════════════════════════════════════════════════════════════════════════╝ */
+
+.wc-bargein-btn {
+    position: relative;
+    padding: 18px 20px;
+    border-radius: 14px;
+    border: 0;
+    color: #fff;
+    font-weight: 800;
+    font-size: 15px;
+    cursor: pointer;
+    background: linear-gradient(180deg, #ff3b3b, #c62828);
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    box-shadow: 0 6px 30px rgba(255, 59, 59, 0.28), 0 0 0 0 rgba(255, 59, 59, 0);
+    animation: pulseDanger 2.4s infinite;
+    transition: all 0.3s ease;
+    width: 100%;
+    flex-shrink: 0;
+    margin: 0;
+}
+.wc-bargein-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 50px rgba(255, 59, 59, 0.5);
+    background: linear-gradient(180deg, #ff6b6b, #e31e1e);
+}
+.wc-bargein-btn:active { transform: translateY(0); }
+.wc-bargein-btn::before{content:'';position:absolute;left:0;top:0;right:0;bottom:0;background:repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 8px, rgba(255,255,255,0.00) 8px 16px);mix-blend-mode:overlay;pointer-events:none}
+@keyframes pulseDanger{0%{box-shadow:0 6px 30px rgba(255,59,59,0.28)}50%{box-shadow:0 12px 50px rgba(255,59,59,0.46)}100%{box-shadow:0 6px 30px rgba(255,59,59,0.28)}}
+
+/* ╔════════════════════════════════════════════════════════════════════════════════╗
+   ║                   RIGHT PANEL: SYSTEM STATS & ALERTS                           ║
+   ║  Features: Code Duress at TOP, Gradient AI Load bar (Blue→Purple→Red)          ║
+   ╚════════════════════════════════════════════════════════════════════════════════╝ */
+.wc-stats-container{padding:12px;display:flex;flex-direction:column;gap:12px;overflow:auto}
+
+/* ─── CODE DURESS ALERT (MOVED TO TOP, EMPHASIZED) ─── */
+.wc-stat-box.highlight {
+    order: -1;
+    background: linear-gradient(180deg, rgba(255, 59, 59, 0.15), rgba(255, 59, 59, 0.08));
+    border: 2px solid rgba(255, 59, 59, 0.4);
+    box-shadow: 0 0 30px rgba(255, 59, 59, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    animation: alertPulse 1.5s ease-in-out infinite;
+    padding: 16px;
+}
+
+@keyframes alertPulse {
+    0%, 100% { 
+        box-shadow: 0 0 20px rgba(255, 59, 59, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    50% { 
+        box-shadow: 0 0 40px rgba(255, 59, 59, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+}
+
+.wc-stat-box {
+    padding: 14px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    font-family: 'JetBrains Mono', monospace;
+}
+.wc-stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.wc-stat-value {
+    font-size: 26px;
+    color: var(--accent-blue);
+    font-weight: 800;
+}
+.wc-stat-value-alert {
+    font-size: 32px;
+    color: #ff6b6b;
+    font-weight: 800;
+    text-shadow: 0 0 15px rgba(255, 59, 59, 0.5);
+}
+
+/* Right panel layout: let stats stack and map fill remaining space */
+.wc-right-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.wc-stat-box {
+    padding: 14px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    font-family: 'JetBrains Mono', monospace;
+    flex-shrink: 0; /* don't allow stats to shrink */
+}
+
+/* ─── AI LOAD BAR (GRADIENT: Blue → Purple → Red) ─── */
+.wc-stat-bar{height:8px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden}
+.wc-stat-fill {
+    height: 100%;
+    background: linear-gradient(90deg, 
+        #39a0ff 0%,        /* Blue */
+        #7b2cbf 40%,       /* Purple */
+        #d91e63 70%,       /* Magenta */
+        #ff3b3b 100%       /* Red */
+    );
+    box-shadow: 0 0 12px rgba(255, 59, 59, 0.3);
+    position: relative;
+}
+
+/* ─── OPERATOR STATUS INDICATORS ─── */
+.wc-operator-item{display:flex;gap:10px;align-items:center;color:#cfe8ff}
+.wc-operator-status.online { color: var(--accent-green); font-weight: 700; }
+.wc-operator-status.busy { color: #ffb86b; font-weight: 700; }
+.wc-operator-status.offline { color: #ff6b6b; }
+
+/* Mini map container fills remaining vertical space */
+#mini-map {
+    flex-grow: 1;
+    min-height: 200px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.04);
+    overflow: hidden;
+    background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.18));
+}
+
+/* Pulse marker styling used by Leaflet divIcon */
+.pulse-marker {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(255, 59, 59, 1);
+    box-shadow: 0 0 8px rgba(255,59,59,0.9);
+    position: relative;
+}
+.pulse-marker::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(255,59,59,0.45);
+    animation: pulse 1.6s infinite ease-out;
+}
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+    100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+}
+
+/* iframe map styling (dark-tint) */
+#mini-map iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    /* Subtle tint to blend with the app theme without being too dark */
+    filter: grayscale(0.08) contrast(0.95) brightness(0.78) saturate(0.92);
+}
+
+/* optional subtle overlay to increase contrast with UI */
+#mini-map::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    top: calc(100% - 100%);
+    pointer-events: none;
+}
+
+/* ╔════════════════════════════════════════════════════════════════════════════════╗
+   ║                        CUSTOM SCROLLBARS                                       ║
+   ╚════════════════════════════════════════════════════════════════════════════════╝ */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:linear-gradient(#2c3e50,#1f2a36);border-radius:6px}
+
+/* ╔════════════════════════════════════════════════════════════════════════════════╗
+   ║                         RESPONSIVE DESIGN                                      ║
+   ╚════════════════════════════════════════════════════════════════════════════════╝ */
+
+/* ─── TABLET: 768px - 980px ─── */
+@media (max-width: 980px) {
+    .wc-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 12px;
+    }
+    
+    .wc-left-panel,
+    .wc-right-panel {
+        min-height: 250px;
+    }
+    
+    .wc-middle-panel {
+        min-height: 400px;
+    }
+}
+
+/* ─── MOBILE: Below 768px ─── */
+@media (max-width: 768px) {
+    .wc-header {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+    }
+    
+    .wc-header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .wc-title {
+        font-size: 24px;
+    }
+    
+    .wc-subtitle {
+        font-size: 12px;
+    }
+    
+    .wc-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .wc-left-panel,
+    .wc-right-panel {
+        display: none;
+    }
+    
+    .wc-middle-panel {
+        min-height: 600px;
+    }
+    
+    .wc-chat-section {
+        min-height: 300px;
+    }
+    
+    .wc-summary-section {
+        grid-template-columns: 1fr;
+        max-height: auto;
+        max-height: 250px;
+    }
+    
+    .wc-message-bubble {
+        max-width: 90%;
+        padding: 12px 16px;
+        font-size: 13px;
+    }
+    
+    .wc-breakin-input {
+        font-size: 14px;
+        padding: 12px;
+    }
+    
+    .wc-breakin-send-btn {
+        padding: 12px 16px;
+        font-size: 12px;
+    }
+}
+
+/* ─── SMALL MOBILE: Below 480px ─── */
+@media (max-width: 480px) {
+    .wc-title {
+        font-size: 20px;
+    }
+    
+    .wc-subtitle {
+        display: none;
+    }
+    
+    .wc-panel {
+        border-radius: 8px;
+    }
+    
+    .wc-chat-header h2 {
+        font-size: 16px;
+    }
+    
+    .wc-breakin-input-section {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .wc-breakin-send-btn {
+        width: 100%;
+    }
+    
+    .wc-message-bubble {
+        max-width: 95%;
+    }
+    
+    .wc-bargein-btn {
+        padding: 14px 12px;
+        font-size: 12px;
+        letter-spacing: 0.8px;
+    }
+    
+    .wc-transcript {
+        padding: 12px;
+        gap: 10px;
+    }
+    
+    .wc-summary-section {
+        padding: 10px;
+        gap: 8px;
+    }
 }
